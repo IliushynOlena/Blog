@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 
-class Testimonials extends Model
+class Testimonial extends Model
 {
     use Notifiable;
 
 
     protected $fillable = [
-        'author_id', 'title', 'body',
+        'id', 'autor_name', 'title', 'body', 'avatar'
     ];
 }
