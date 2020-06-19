@@ -17,10 +17,9 @@ class PostController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            $posts = Post::join('users', "author_id", '=', 'users.id')
-                ->where('post_title', 'like', '%' . $request->search . '%')
-                ->orWhere('short_title', 'like', '%' . $request->search . '%')
-                ->orWhere('description', 'like', '%' . $request->search . '%')
+            $posts = Post::where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('excerpt', 'like', '%' . $request->search . '%')
+                ->orWhere('body', 'like', '%' . $request->search . '%')
                 ->OrderBy('posts.created_at', 'desc');
             $countPosts = Post::count();
             $posts = $posts->paginate(6);
@@ -30,9 +29,7 @@ class PostController extends Controller
                 ->with(compact('countPosts'));
         }
 
-        $posts = Post::
-            /**join('users', 'author_id', '=', 'users.id')->*/
-            OrderBy('posts.created_at', 'desc')->paginate(6);
+        $posts = Post::OrderBy('posts.created_at', 'desc')->paginate(6);
         return view('posts.index', compact('posts'));
     }
 
@@ -78,9 +75,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::
-        /**join('users', "author_id", '=', 'users.-id')->*/
-        find($id);
+        $post = Post::join('users', "author_id", '=', 'users.id')->find($id);
         return view('posts.show', compact('post'));
     }
 
